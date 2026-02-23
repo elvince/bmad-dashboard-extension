@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/elvince/bmad-dashboard-extension/compare/v1.2.2...v1.3.0) (2026-02-23)
+
+
+### Bug Fixes
+
+* next action command issue with retro command. ([3d3f9af](https://github.com/elvince/bmad-dashboard-extension/commit/3d3f9af9913436ee1a1fe5620c7b64963ec019ca))
+
+
+### Features
+
+* add story number in command and copy command ([835d836](https://github.com/elvince/bmad-dashboard-extension/commit/835d836f31f6fc5c2e8d5b091dbef49dd9de9c7d))
+
 ## [1.2.2](https://github.com/elvince/bmad-dashboard-extension/compare/v1.2.1...v1.2.2) (2026-02-23)
 
 
