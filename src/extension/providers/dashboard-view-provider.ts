@@ -118,13 +118,15 @@ export class DashboardViewProvider implements vscode.WebviewViewProvider {
   /**
    * Generate HTML for non-BMAD workspaces
    */
-  private getNotDetectedHtml(_webview: vscode.Webview): string {
+  private getNotDetectedHtml(webview: vscode.Webview): string {
+    const nonce = getNonce();
+
     return /* html */ `
       <!DOCTYPE html>
       <html lang="en">
       <head>
         <meta charset="UTF-8">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline';">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${nonce}';">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>BMAD Dashboard</title>
       </head>
@@ -132,7 +134,21 @@ export class DashboardViewProvider implements vscode.WebviewViewProvider {
         <div style="padding: 16px; text-align: center; color: var(--vscode-descriptionForeground);">
           <p>Not a BMAD project</p>
           <p style="font-size: 12px;">Open a workspace with a <code>_bmad/</code> directory to use the BMAD Dashboard.</p>
+          <button id="setup-button" style="cursor: pointer; padding: 8px 16px; background: var(--vscode-button-background); color: var(--vscode-button-foreground); border: none; border-radius: 2px;">Setup BMAD</button>
         </div>
+        <script nonce="${nonce}">
+          (function() {
+            const vscode = acquireVsCodeApi();
+            const button = document.getElementById('setup-button');
+            if (button) {
+              button.addEventListener('click', () => {
+                vscode.postMessage({
+                  type: 'SETUP_BMAD'
+                });
+              });
+            }
+          })();
+        </script>
       </body>
       </html>
     `;

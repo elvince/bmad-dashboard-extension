@@ -31,6 +31,7 @@ export const ToExtensionType = {
   REQUEST_DOCUMENT_CONTENT: 'REQUEST_DOCUMENT_CONTENT',
   NAVIGATE_EDITOR_PANEL: 'NAVIGATE_EDITOR_PANEL',
   REQUEST_FILE_TREE: 'REQUEST_FILE_TREE',
+  SETUP_BMAD: 'SETUP_BMAD',
 } as const;
 
 // ============================================================================
@@ -153,6 +154,13 @@ export interface RefreshMessage {
 }
 
 /**
+ * Run command to setup BMAD in the current workspace
+ */
+export interface SetupBmadMessage {
+  type: typeof ToExtensionType.SETUP_BMAD;
+}
+
+/**
  * Request document content message - requests file content sent back via DOCUMENT_CONTENT
  */
 export interface RequestDocumentContentMessage {
@@ -193,7 +201,8 @@ export type ToExtension =
   | RefreshMessage
   | RequestDocumentContentMessage
   | NavigateEditorPanelMessage
-  | RequestFileTreeMessage;
+  | RequestFileTreeMessage
+  | SetupBmadMessage;
 
 // ============================================================================
 // Type Guards for Message Type Narrowing
@@ -275,6 +284,13 @@ export function isNavigateEditorPanelMessage(
  */
 export function isRequestFileTreeMessage(message: ToExtension): message is RequestFileTreeMessage {
   return message.type === ToExtensionType.REQUEST_FILE_TREE;
+}
+
+/**
+ * Type guard for SETUP_BMAD messages
+ */
+export function isSetupBmadMessage(message: ToExtension): message is SetupBmadMessage {
+  return message.type === ToExtensionType.SETUP_BMAD;
 }
 
 /**
@@ -390,4 +406,11 @@ export function createFileTreeMessage(roots: FileTreeNode[]): FileTreeMessage {
  */
 export function createRequestFileTreeMessage(): RequestFileTreeMessage {
   return { type: ToExtensionType.REQUEST_FILE_TREE };
+}
+
+/**
+ * Create a SETUP_BMAD message
+ */
+export function createSetupBmadMessage(): SetupBmadMessage {
+  return { type: ToExtensionType.SETUP_BMAD };
 }
