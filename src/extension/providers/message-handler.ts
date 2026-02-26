@@ -37,6 +37,9 @@ export function handleWebviewMessage(
     case ToExtensionType.EXECUTE_WORKFLOW:
       executeWorkflow(msg.payload.command);
       break;
+    case ToExtensionType.SETUP_BMAD:
+      setupBmad();
+      break;
     case ToExtensionType.COPY_COMMAND:
       void copyCommand(msg.payload.command);
       break;
@@ -183,6 +186,20 @@ function executeWorkflow(command: string): void {
     terminal.sendText(`${cliPrefix} ${command}`);
   } catch {
     void vscode.window.showErrorMessage('Failed to execute workflow command');
+  }
+}
+
+
+function setupBmad(): void {
+  try {
+    let terminal = vscode.window.terminals.find((t) => t.name === TERMINAL_NAME);
+    if (!terminal) {
+      terminal = vscode.window.createTerminal({ name: TERMINAL_NAME });
+    }
+    terminal.show();
+    terminal.sendText("npx bmad-method install");
+  } catch {
+    void vscode.window.showErrorMessage('Failed to install BMAD');
   }
 }
 
